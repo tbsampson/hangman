@@ -1,4 +1,4 @@
-
+<!-- Hangman 90's Movie Edition Game -->
 <!doctype html>
 <html lang="en">
   <head>
@@ -8,240 +8,78 @@
     <meta name="author" content="Tom Sampson, UT Coder Camp, Week 3, Monday Homework">
     <link rel="icon" href="favicon.ico">
     <title>Let's Play Hangman!</title>
-
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <div class="jumbotron mt-3">
+                    <h1>Hangman!</h1>
+                    <p class="lead">'90's Movies Edition!</p>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class='movie-title-box'>
+                            <div class='movie-title-display'></div>
+                        </div>         
+                    </div>
+                </div>                
+                <div class="row">
+                    <div class="col-md-12">
+                        <canvas id="gameCanvas"></canvas>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>Guess a letter or space!</h3>
+                            <input type="text" class="form-control" id="letter-input" maxlength=1/>
+                    </div>
+                </div>
+                <div class="row">            
+                    <div class="col-md-12">
+                        <h3>Letters you have already guessed</h3>
+                        <div id="wrong-letters"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Hangman!</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="instructions.html">How to play</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                </ul>
+            </div>
+            </nav>
+        </footer>
+    </body>
+    <!-- Bootstrap core JavaScript -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>  
+
+    <!-- movie list-->
     <script type="text/javascript" src="js/movieList.js"></script>
-
-  </head>
-
-  <body>
-    <div class="container">
-        <div class="jumbotron mt-3">
-            <h1>Hangman!</h1>
-            <p class="lead">'90's Movies Edition!</p>
-        </div>
-    </div>
-
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class='movie-title-box'>
-                    <div class='movie-title-display'></div>
-                </div>         
-            </div>
-        </div>                
-        <div class="row">
-            <div class="col-md-12">
-                <canvas id="gameCanvas"></canvas>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <h3>Enter your letter guess!</h3>
-                    <input type="text" class="form-control" id="letter-input" maxlength=1/>
-            </div>
-        </div>
-        <div class="row">            
-            <div class="col-md-12">
-                <h3>Letters you have already guessed</h3>
-                <div id="wrong-letters"></div>
-            </div>
-        </div>
-    </div>
-
-
-     <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">Hangman!</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="instructions.html">How to play</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="about.html">About</a>
-              </li>
-        </ul>
-      </div>
-    </nav>
-    <!-- Hangman Game Script -->
-<script>
-
-
-// Get a random movie from the list
-function randomMovieTitle() {
-    return movieTitles[Math.floor(Math.random() * movieTitles.length)];
-}
-
-// get letter count
-function blanksFromSolution( solutionMovieTitle ) {  
-    var result = ""; 
-    for ( i in solutionMovieTitle ) {
-        result = "_" + result;
-    }
-    return result;
-}
-
-// show if letter of solution is chosen
-function alterAt( n, c, originalString ) {
-    return originalString.substr(0,n) + c + originalString.substr(n+1,originalString.length);
-}
-
-// check player guess against solution
-function guessLetter( letter, shown, solution ) {
-    var checkIndex = 0;
     
-    checkIndex = solution.indexOf(letter);
-    while ( checkIndex >= 0 ) {
-        shown = alterAt( checkIndex, letter, shown );
-        checkIndex = solution.indexOf(letter, checkIndex + 1);
-    }
-    return shown;
-}
-
-// reset the game
-function resetGame() {
-    eraseCanvas();
-    resetUI();
-    gameSolution = randomMovieTitle();
-    gameRevealedSolution = blanksFromSolution(gameSolution);
-    hangmanState = 0;
-    drawMovieTitle(gameRevealedSolution);    
-}
-
-$(document).ready(resetGame);
-function win() { alert('You Won!');  resetGame() ;}
-function lose() { alert('You Lost!'); resetGame(); }
-function doKeypress() {
-    var tempChar = $('#letter-input').val().toLowerCase();
-    var tempString = "";
-    $('#letter-input').val("");
- 
-
-    tempString = guessLetter( tempChar, gameRevealedSolution, gameSolution );
-    if ( tempString != gameRevealedSolution ) {
-        updateMovieTitle( tempString );
-        gameRevealedSolution = tempString;
-        if ( gameRevealedSolution === gameSolution ) {
-            win();
-        }
-    } else {
-        wrongLetter(tempChar);
-        drawSequence[ hangmanState++ ]();
-        if ( hangmanState === drawSequence.length ) {
-            lose();
-        }
-    }  
-}
-$('#letter-input').keyup( doKeypress );
-
-function drawLine(moveToX, moveToY, lineToX, lineToY) {
-    var canvas=document.getElementById("gameCanvas");
-    var context=canvas.getContext("2d");
-    context.moveTo(moveToX,moveToY);
-    context.lineTo(lineToX,lineToY);
-    context.stroke();
-}
-
-function drawGallows() {
-    drawLine(0,150,150,150);
-    drawLine(10,0,10,150);    
-    drawLine(0,5,70,5);    
-    drawLine(60,5,60,15);            
-}
-
-function drawHead() {
-    var canvas = document.getElementById('gameCanvas');
-    var context = canvas.getContext('2d');
-    context.beginPath();
-    context.arc(60, 25, 10, 0, Math.PI*2, true);
-    context.stroke();
-}
-
-function drawNeck() {
-    drawLine(60,35,60,40);
-}
-
-function drawTorso() {
-    drawLine(60,40,60,60);
-}
-
-function drawLeftArm() {
-    drawLine(60,40,40,55);
-}
-
-function drawRightArm() {
-    drawLine(60,40,80,55);
-}
-
-function drawLeftLeg() {
-    drawLine(60,60,40,90);
-}
-
-function drawRightLeg() {
-    drawLine(60,60,80,90);
-}
-
-function eraseCanvas()    {
-        var context = document.getElementById('gameCanvas').getContext('2d');
-        
-        context.beginPath();
-        context.rect(0,0,205,205);
-        context.fill();
-        context.fillStyle = 'white';
-    }
-
-var drawSequence = [ drawGallows, drawHead, drawNeck, drawTorso, drawLeftArm, drawRightArm, drawLeftLeg, drawRightLeg ];
-
-function wrongLetter ( letter ) {
-    $('#wrong-letters').append(
-        $('<span/>').addClass('guessed-letter').text(letter));
-}
-
-function resetUI () {
-// Need to find a way to clear the canvas
-
-    $('.guessed-letter').remove();
-    $('.shown-letter').remove();
-}
-
-function drawMovieTitle( answer ) {
-    for ( i in answer ) {
-	$('.movie-title-display').append(
-	    $('<span/>').addClass('shown-letter').html('&nbsp;'));
-    }
-}
-
-function updateMovieTitle( answer ) {
-    $k = $('.shown-letter:first');
-    for ( i in answer ) {
-	if ( answer.charAt(i) != '_' ) {
-	    $k.text( answer.charAt(i) );
-	} else { 
-	    $k.html('&nbsp;');
-	}
-	$k = $k.next();
-    }
-}
-
-</script>
-
-
-</body>
+    <!-- game -->
+    <script type="text/javascript" src="js/game.js"></script>
 </html>

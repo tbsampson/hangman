@@ -1,0 +1,27 @@
+#gameCanvas {
+    margin: 10px;
+}
+
+#letter-input {
+    width:30pt;
+    font-size:16pt;
+    text-align:center;
+}
+
+.guessed-letter {
+    font-size:16pt;
+    text-align:center;
+}
+
+.shown-letter {
+    border-bottom: 2px #000 solid;
+    padding: 0 5px;
+    margin: 0 5px;
+    font-size:16pt;
+}
+
+.movie-title-display {
+    height:31px;
+    padding:3pt;
+    font-size:16pt;
+}
